@@ -43,7 +43,7 @@ class Administrador(models.Model):
 
     class AdministradorForm(ModelForm):
         class Meta:
-            ordering = ["usuario"]
+            ordering = ["user"]
             verbose_name = "Administrador"
   
  
@@ -55,7 +55,7 @@ class Vendedor(models.Model):
 
     class VendedorForm(ModelForm):
         class Meta:
-            ordering = ["usuario"]
+            ordering = ["user"]
             verbose_name = "Vendedor"
 
     def crearVendedor(self,user):
