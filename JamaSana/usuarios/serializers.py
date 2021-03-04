@@ -3,6 +3,13 @@ from .models import Cliente
 from .models import Administrador
 from .models import Vendedor
 
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = ('username', 'password','first_name', 'last_name', 'email')
+
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
@@ -11,9 +18,9 @@ class ClienteSerializer(serializers.ModelSerializer):
 class AdministradorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrador
-        fields = ('usuario','contraseña')
+        fields = ('user')
 
 class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
-        fields = ('usuario','contraseña')
+        fields = ('user')
