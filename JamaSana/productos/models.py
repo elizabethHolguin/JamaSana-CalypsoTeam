@@ -3,7 +3,7 @@ from django.forms import ModelForm
 # Create your models here.
 class Categoria(models.Model):
     nombre = models.CharField(max_length=200)
-    nombre_perfil = models.ForeignKey("general.Perfil", on_delete = models.CASCADE)
+    imagen = models.ImageField(null=True,blank=True)
 
     class CategoriaForm(ModelForm):
         class Meta:

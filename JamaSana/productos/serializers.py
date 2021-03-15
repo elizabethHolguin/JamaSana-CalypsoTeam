@@ -7,7 +7,7 @@ from .models import DetallePedido
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
-        fields = ('nombre','nombre_perfil')
+        fields = ('nombre','imagen')
 
 class ComidasSerializer(serializers.ModelSerializer):
     class Meta:
