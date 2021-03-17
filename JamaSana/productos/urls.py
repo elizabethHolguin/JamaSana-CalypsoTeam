@@ -7,6 +7,10 @@ from . import views
 urlpatterns = [
     path('allcategorias', views.categorias),
     path('categoria/<int:pk>', views.categoria),
+    path('allcomidas', views.comidasAll),
+    path('comida/<int:pk>', views.comida),
+    path('allpedidos', views.pedidosAll),
+    path('pedido/<int:pk>', views.pedido),
 ]
 router = routers.DefaultRouter()
 router.register('categorias', views.CategoriaViewSet,'categorias')

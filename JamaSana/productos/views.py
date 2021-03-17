@@ -102,3 +102,113 @@ def categoria(request, pk):
             'error':'Permission Denied!'
         }
         return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def comidasAll(request):
+    data = Comidas.objects.all()
+    serializer = ComidasSerializer(data, many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+@api_view(['GET','POST','PUT','DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
+@permission_classes([AllowAny])
+def comida(request, pk):
+
+    if(request.method=='GET'):
+        data = generics.get_object_or_404(Comidas,id=pk)
+        if data is not None:
+            serializer = ComidasSerializer(data, many=False)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response({'message': 'Comida no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    elif(request.method=='POST' and request.user.is_authenticated):
+        serializer = ComidasSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)  
+
+    elif(request.method=='PUT' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Comidas,id=pk)
+        if data is not None:
+            serializer = ComidasSerializer(data, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Comida no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    elif(request.method=='DELETE' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Comidas,id=pk)
+        if data is not None:
+            data.delete()
+            msg={
+                'message':'Comida eliminado exitosamente'
+            }
+            return Response(msg,status=status.HTTP_200_OK)
+        return Response({'message': 'Comida no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        msg={
+            'error':'Permission Denied!'
+        }
+        return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def pedidosAll(request):
+    data = Pedido.objects.all()
+    serializer = PedidoSerializer(data, many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+@api_view(['GET','POST','PUT','DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
+@permission_classes([AllowAny])
+def pedido(request, pk):
+
+    if(request.method=='GET'):
+        data = generics.get_object_or_404(Pedido,id=pk)
+        if data is not None:
+            serializer = PedidoSerializer(data, many=False)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response({'message': 'Pedido no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    elif(request.method=='POST' and request.user.is_authenticated):
+        serializer = PedidoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)  
+
+    elif(request.method=='PUT' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Pedido,id=pk)
+        if data is not None:
+            serializer = PedidoSerializer(data, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Pedido no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    elif(request.method=='DELETE' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Pedido,id=pk)
+        if data is not None:
+            data.delete()
+            msg={
+                'message':'Pedido eliminado exitosamente'
+            }
+            return Response(msg,status=status.HTTP_200_OK)
+        return Response({'message': 'Pedido no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        msg={
+            'error':'Permission Denied!'
+        }
+        return Response(msg,status=status.HTTP_403_FORBIDDEN)

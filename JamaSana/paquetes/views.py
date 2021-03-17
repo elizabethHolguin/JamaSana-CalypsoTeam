@@ -25,3 +25,5 @@ class ClienteSuscripcionViewSet(viewsets.ModelViewSet):
     queryset = ClienteSuscripcion.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class =  ClienteSuscripcionSerializer
+
+
