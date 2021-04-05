@@ -75,7 +75,7 @@ def categoria(request, pk):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)  
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)  
 
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Categoria,id=pk)
@@ -130,7 +130,7 @@ def comida(request, pk):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)  
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)  
 
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Comidas,id=pk)
@@ -185,7 +185,7 @@ def pedido(request, pk):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)  
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)  
 
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Pedido,id=pk)
