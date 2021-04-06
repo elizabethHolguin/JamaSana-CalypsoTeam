@@ -162,6 +162,7 @@ def vendedorAll(request):
             user['email'] = vendedor.user.email
             lista.append(user)
         return Response(lista,status=status.HTTP_200_OK)
+
     msg={
             'error':'Permission Denied!'
         }
