@@ -239,6 +239,7 @@ def vendedor(request, pk):
 @authentication_classes([])
 @permission_classes([AllowAny])
 def registrar(request):
+    
     username = request.data.get("username")
     userExists=User.objects.filter(username=username).exists()
     if(userExists):
@@ -303,61 +304,68 @@ def registrar(request):
 @authentication_classes([])
 @permission_classes([AllowAny])
 def registrar_vendedor(request):
-    username = request.data.get("username")
-    userExists=User.objects.filter(username=username).exists()
-    if(userExists):
-        msg={
-            'error':"User already exists."
-        }
-        return Response(msg,status=status.HTTP_400_BAD_REQUEST)
-    
-    email = request.data.get("email")
-    emailExists=User.objects.filter(email=email).exists()
-    if(emailExists):
-        msg={
-            'error':"Email already exists."
-        }
-        return Response(msg,status=status.HTTP_400_BAD_REQUEST)
-    
-    password = make_password(request.data.get("password"))
 
-    first_name = request.data.get("first_name")
-    last_name = request.data.get("last_name")
-
-    data = {
-        "username": username,
-        "email": email,
-        "password": password,
-        "first_name": first_name,
-        "last_name": last_name
-    }
-
-    serializer = UserSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        try:
-            user = User.objects.get(username=username)
-            vendedor = Vendedor().crearVendedor(user)
-            if vendedor is not None:
-                data2 = {
-                    "username": username,
-                    "email": email,
-                    "first_name": first_name,
-                    "last_name": last_name
-                }
-                return Response(data2, status=status.HTTP_201_CREATED)
-            else:
-                msg={
-                    'error':"Error creating user vendedor in database"
-                }
-                return Response(msg,status=status.HTTP_400_BAD_REQUEST)
-        except:
+    if request.user.is_authenticated:
+        username = request.data.get("username")
+        userExists=User.objects.filter(username=username).exists()
+        if(userExists):
             msg={
-                'error':"Error creating user vendedor because of user account"
+                'error':"User already exists."
             }
             return Response(msg,status=status.HTTP_400_BAD_REQUEST)
+        
+        email = request.data.get("email")
+        emailExists=User.objects.filter(email=email).exists()
+        if(emailExists):
+            msg={
+                'error':"Email already exists."
+            }
+            return Response(msg,status=status.HTTP_400_BAD_REQUEST)
+        
+        password = make_password(request.data.get("password"))
 
-    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        first_name = request.data.get("first_name")
+        last_name = request.data.get("last_name")
+
+        data = {
+            "username": username,
+            "email": email,
+            "password": password,
+            "first_name": first_name,
+            "last_name": last_name
+        }
+
+        serializer = UserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            try:
+                user = User.objects.get(username=username)
+                vendedor = Vendedor().crearVendedor(user)
+                if vendedor is not None:
+                    data2 = {
+                        "username": username,
+                        "email": email,
+                        "first_name": first_name,
+                        "last_name": last_name
+                    }
+                    return Response(data2, status=status.HTTP_201_CREATED)
+                else:
+                    msg={
+                        'error':"Error creating user vendedor in database"
+                    }
+                    return Response(msg,status=status.HTTP_400_BAD_REQUEST)
+            except:
+                msg={
+                    'error':"Error creating user vendedor because of user account"
+                }
+                return Response(msg,status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    msg={
+            'error':'Permission Denied!'
+        }
+    return Response(msg,status=status.HTTP_403_FORBIDDEN)
 
 
 
