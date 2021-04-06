@@ -147,7 +147,7 @@ def login_vendedor(request):
         
 
 @api_view(['GET'])
-@authentication_classes([])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
 @permission_classes([AllowAny])
 def vendedorAll(request):
     if request.user.is_authenticated:
