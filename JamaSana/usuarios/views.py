@@ -146,6 +146,90 @@ def login_vendedor(request):
         return Response({'error': 'User not authorized'}, status=HTTP_404_NOT_FOUND)
         
 
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def vendedorAll(request):
+    if request.user.is_authenticated:
+        data = Vendedor.objects.all()
+        lista = []
+        for vendedor in data:
+            user = {}
+            user['id'] = vendedor.pk
+            user['username'] = data.user.username
+            user['first_name'] = vendedor.user.first_name
+            user['last_name']= vendedor.user.last_name
+            user['email'] = vendedor.user.email
+            lista.append(user)
+        return Response(lista,status=status.HTTP_200_OK)
+    msg={
+            'error':'Permission Denied!'
+        }
+    return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+@api_view(['GET','PUT','DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
+@permission_classes([AllowAny])
+def vendedor(request, pk):
+
+    if(request.method=='GET' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Vendedor,id=pk)
+        if data is not None:
+            user = {}
+            user['id'] = data.pk
+            user['username'] = data.user.username
+            user['first_name'] = data.user.first_name
+            user['last_name']= data.user.last_name
+            user['email'] = data.user.email
+            return Response(user,status=status.HTTP_200_OK)
+        return Response({'message': 'Vendedor no existe'},status=status.HTTP_400_BAD_REQUEST) 
+
+    elif(request.method=='PUT' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Vendedor,id=pk)
+        if data is not None:
+
+            username = request.data.get("username")
+            first_name = request.data.get("first_name")
+            last_name = request.data.get("last_name")
+            email = request.data.get("email")
+
+            if username is not None:
+                data.user.username = username
+            if first_name is not None:
+                data.user.first_name = first_name
+            if last_name is not None:
+                data.user.last_name = last_name
+            if email is not None:
+                data.user.email = email
+
+            data.save()
+
+            user = {}
+            user['id'] = data.pk
+            user['username'] = data.user.username
+            user['first_name'] = data.user.first_name
+            user['last_name']= data.user.last_name
+            user['email'] = data.user.email
+            return Response(user, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Vendedor no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    elif(request.method=='DELETE' and request.user.is_authenticated):
+        data = generics.get_object_or_404(Vendedor,id=pk)
+        if data is not None:
+            data.delete()
+            msg={
+                'message':'Vendedor eliminado exitosamente'
+            }
+            return Response(msg,status=status.HTTP_200_OK)
+        return Response({'message': 'Vendedor no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        msg={
+            'error':'Permission Denied!'
+        }
+        return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+
 
 
 ##Funciones Para Registro de Usuarios
@@ -273,6 +357,8 @@ def registrar_vendedor(request):
             return Response(msg,status=status.HTTP_400_BAD_REQUEST)
 
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 
