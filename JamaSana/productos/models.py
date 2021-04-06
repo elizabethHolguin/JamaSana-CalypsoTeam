@@ -16,12 +16,13 @@ class Categoria(models.Model):
 class Comidas(models.Model):
     nombre =  models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
-    calorias_totales = models.FloatField()
     macronutrientes = models.CharField(max_length=1000)
-    id_categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    id_vendedor = models.ForeignKey("usuarios.Vendedor", on_delete=models.CASCADE)
+    estado = models.BooleanField(default=True)
+    precio = models.FloatField(default=0)
+    calorias_totales = models.FloatField()
     imagen = models.ImageField()
-    direccion_envio = models.CharField(max_length=500)
+    id_categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
+    id_vendedor = models.ForeignKey("usuarios.Vendedor", on_delete=models.DO_NOTHING)
 
     class ComidasForm(ModelForm):
         class Meta:

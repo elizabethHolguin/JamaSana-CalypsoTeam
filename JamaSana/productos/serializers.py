@@ -12,8 +12,8 @@ class CategoriaSerializer(serializers.ModelSerializer):
 class ComidasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comidas
-        fields = ('id','nombre','descripcion','calorias_totales','macronutrientes','id_categoria','id_vendedor',
-        'imagen','direccion_envio')
+        fields = ('id','nombre','descripcion','precio','calorias_totales','macronutrientes','id_categoria','id_vendedor',
+        'imagen','estado')
 
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
