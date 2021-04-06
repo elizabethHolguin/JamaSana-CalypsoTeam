@@ -65,7 +65,7 @@ def configuracion(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Configuracion,id=pk)
         if data is not None:
-            serializer = ConfiguracionSerializer(data, data=request.data)
+            serializer = ConfiguracionSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -120,7 +120,7 @@ def perfil(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Perfil,id=pk)
         if data is not None:
-            serializer = PerfilSerializer(data, data=request.data)
+            serializer = PerfilSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)

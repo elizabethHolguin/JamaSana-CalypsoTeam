@@ -73,7 +73,7 @@ def calendario(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Calendario,id=pk)
         if data is not None:
-            serializer = CalendarioSerializer(data, data=request.data)
+            serializer = CalendarioSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -128,7 +128,7 @@ def dia(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Dias,id=pk)
         if data is not None:
-            serializer = DiasSerializer(data, data=request.data)
+            serializer = DiasSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -183,7 +183,7 @@ def detalleDia(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Detalle_dias,id=pk)
         if data is not None:
-            serializer = Detalle_diasSerializer(data, data=request.data)
+            serializer = Detalle_diasSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)

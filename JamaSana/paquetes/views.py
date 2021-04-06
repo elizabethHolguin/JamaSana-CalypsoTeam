@@ -72,7 +72,7 @@ def tipoSuscripcion(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(TipoSuscripcion,id=pk)
         if data is not None:
-            serializer = TipoSuscripcionSerializer(data, data=request.data)
+            serializer = TipoSuscripcionSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -127,7 +127,7 @@ def suscripcion(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Suscripcion,id=pk)
         if data is not None:
-            serializer = SuscripcionSerializer(data, data=request.data)
+            serializer = SuscripcionSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -182,7 +182,7 @@ def clienteSuscripcion(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(ClienteSuscripcion,id=pk)
         if data is not None:
-            serializer = ClienteSuscripcionSerializer(data, data=request.data)
+            serializer = ClienteSuscripcionSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)

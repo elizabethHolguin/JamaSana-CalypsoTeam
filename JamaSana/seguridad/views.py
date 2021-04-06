@@ -81,7 +81,7 @@ def formaPago(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(FormaDePago,id=pk)
         if data is not None:
-            serializer = FormaDePagoSerializer(data, data=request.data)
+            serializer = FormaDePagoSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -136,7 +136,7 @@ def iva(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Iva,id=pk)
         if data is not None:
-            serializer = IvaSerializer(data, data=request.data)
+            serializer = IvaSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -191,7 +191,7 @@ def tarjeta(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Tarjeta,id=pk)
         if data is not None:
-            serializer = TarjetaSerializer(data, data=request.data)
+            serializer = TarjetaSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -246,7 +246,7 @@ def factura(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Factura,id=pk)
         if data is not None:
-            serializer = FacturaSerializer(data, data=request.data)
+            serializer = FacturaSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)

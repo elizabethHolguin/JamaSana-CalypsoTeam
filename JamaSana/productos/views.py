@@ -80,7 +80,7 @@ def categoria(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Categoria,id=pk)
         if data is not None:
-            serializer = CategoriaSerializer(data, data=request.data)
+            serializer = CategoriaSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -113,7 +113,7 @@ def comidasAll(request):
     return Response(serializer.data,status=status.HTTP_200_OK)
 
 
-@api_view(['GET','POST','PUT','DELETE'])
+@api_view(['GET','POST','PUT','DELETE', 'PATCH'])
 @authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
 @permission_classes([AllowAny])
 def comida(request, pk):
@@ -135,10 +135,11 @@ def comida(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Comidas,id=pk)
         if data is not None:
-            serializer = ComidasSerializer(data, data=request.data)
+            serializer = ComidasSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'Comida no existe'},status=status.HTTP_400_BAD_REQUEST)
 
@@ -190,7 +191,7 @@ def pedido(request, pk):
     elif(request.method=='PUT' and request.user.is_authenticated):
         data = generics.get_object_or_404(Pedido,id=pk)
         if data is not None:
-            serializer = PedidoSerializer(data, data=request.data)
+            serializer = PedidoSerializer(data, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
