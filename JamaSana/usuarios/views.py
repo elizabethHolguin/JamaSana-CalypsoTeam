@@ -150,23 +150,35 @@ def login_vendedor(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
 @permission_classes([AllowAny])
 def vendedorAll(request):
-    if request.user.is_authenticated:
-        data = Vendedor.objects.all()
-        lista = []
-        for vendedor in data:
-            user = {}
-            user['id'] = vendedor.pk
-            user['username'] = data.user.username
-            user['first_name'] = vendedor.user.first_name
-            user['last_name']= vendedor.user.last_name
-            user['email'] = vendedor.user.email
-            lista.append(user)
-        return Response(lista,status=status.HTTP_200_OK)
+    # if request.user.is_authenticated:
+    data = Vendedor.objects.all()
+    # dataUser = User.objects.all()
+    lista = []
+    for vendedor in data:
+        # print(vendedor)
+        user = {}
+        user['id'] = vendedor.pk
+        dataUser = User.objects.get(id=vendedor.pk)
+        user['username'] = dataUser.username
+        user['first_name'] = dataUser.first_name
+        user['last_name'] = dataUser.last_name
+        user['email'] = dataUser.email
+        # user['username'] = data.user.username
+        # user['first_name'] = vendedor.user.first_name
+    #     user['last_name']= vendedor.user.last_name
+    #     user['email'] = vendedor.user.email
+        lista.append(user)
+    return Response(lista,status=status.HTTP_200_OK)
 
-    msg={
-            'error':'Permission Denied!'
-        }
-    return Response(msg,status=status.HTTP_403_FORBIDDEN)
+    # print (data)
+    # print(dataUser)
+    # serializer = VendedorSerializer(data, many=True)
+    # return Response(serializer.data,status=status.HTTP_200_OK)
+
+    # msg={
+    #         'error':'Permission Denied!'
+    #     }
+    # return Response(msg,status=status.HTTP_403_FORBIDDEN)
 
 @api_view(['GET','PUT','DELETE'])
 @authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
