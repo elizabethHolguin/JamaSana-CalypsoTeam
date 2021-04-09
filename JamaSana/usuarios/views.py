@@ -152,13 +152,11 @@ def login_vendedor(request):
 def vendedorAll(request):
     # if request.user.is_authenticated:
     data = Vendedor.objects.all()
-    # dataUser = User.objects.all()
     lista = []
     for vendedor in data:
-        # print(vendedor)
         user = {}
+        dataUser = User.objects.get(id=int(vendedor.user.id))
         user['id'] = vendedor.pk
-        dataUser = User.objects.get(id=vendedor.pk)
         user['username'] = dataUser.username
         user['first_name'] = dataUser.first_name
         user['last_name'] = dataUser.last_name
@@ -169,12 +167,6 @@ def vendedorAll(request):
     #     user['email'] = vendedor.user.email
         lista.append(user)
     return Response(lista,status=status.HTTP_200_OK)
-
-    # print (data)
-    # print(dataUser)
-    # serializer = VendedorSerializer(data, many=True)
-    # return Response(serializer.data,status=status.HTTP_200_OK)
-
     # msg={
     #         'error':'Permission Denied!'
     #     }
