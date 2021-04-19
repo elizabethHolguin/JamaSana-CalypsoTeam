@@ -228,6 +228,7 @@ def vendedor(request, pk):
     elif(request.method=='DELETE' and request.user.is_authenticated):
         data = generics.get_object_or_404(Vendedor,id=pk)
         if data is not None:
+            data.user.delete()
             data.delete()
             msg={
                 'message':'Vendedor eliminado exitosamente'
