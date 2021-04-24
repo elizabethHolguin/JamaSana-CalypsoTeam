@@ -5,9 +5,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Cliente(models.Model):
-    nombre = models.CharField(max_length=200)
-    apellido = models.CharField(max_length=250)
-    email = models.CharField(max_length=300)
     direccion = models.CharField(max_length=350)
     fecha_nacimiento = models.DateField()
     id_tarjeta = models.ForeignKey("seguridad.Tarjeta", on_delete=models.CASCADE,null=True,blank=True)
@@ -15,16 +12,15 @@ class Cliente(models.Model):
 
     class ClienteForm(ModelForm):
         class Meta:
-            ordering = ["nombre","apellido"]
+            # ordering = ["nombre","apellido"]
+            ordering = ["user"]
             verbose_name = "Cliente"
 
-    def crearCliente(self,user,nombre,apellido,email,direccion,fecha_nacimiento):
+    # def crearCliente(self,user,nombre,apellido,email,direccion,fecha_nacimiento):
+    def crearCliente(self,user,direccion,fecha_nacimiento):
         try:
             cliente = Cliente()
             cliente.user = user
-            cliente.nombre = nombre
-            cliente.apellido = apellido
-            cliente.email = email
             cliente.direccion = direccion
             cliente.fecha_nacimiento = parse_date(fecha_nacimiento)
             cliente.id_tarjeta = None
@@ -36,7 +32,7 @@ class Cliente(models.Model):
 
 
     def __str__(self):
-        return self.nombre + ' - ' + self.apellido 
+        return self.user.first_name + ' - ' + self.user.last_name
     
 class Administrador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

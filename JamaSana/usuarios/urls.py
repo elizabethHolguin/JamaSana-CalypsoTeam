@@ -11,7 +11,9 @@ urlpatterns = [
    path('registrar', views.registrar),
    path('registrar_vendedor', views.registrar_vendedor),
    path('allvendedor',views.vendedorAll),
-   path('vendedor/<int:pk>',views.vendedor)
+   path('vendedor/<int:pk>',views.vendedor),
+   path('allcliente',views.clienteAll),
+   path('cliente/<int:pk>',views.cliente)
 ]
 router = routers.DefaultRouter()
 router.register('clientes',views.ClienteViewSet,'clientes')
