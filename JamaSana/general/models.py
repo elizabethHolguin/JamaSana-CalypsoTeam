@@ -30,3 +30,14 @@ class Perfil(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class PerfilE(models.Model):
+    nombre=models.CharField(max_length=200)
+    imagen=models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = "Perfil_E"
+
+    def __str__(self):
+        return self.nombre
+

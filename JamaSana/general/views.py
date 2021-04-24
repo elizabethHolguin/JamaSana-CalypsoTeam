@@ -18,9 +18,11 @@ from rest_framework.status import (
 
 from .models import Configuracion
 from .models import Perfil
+from .models import PerfilE
 
 from .serializers import ConfiguracionSerializer
 from .serializers import PerfilSerializer
+from .serializers import PerfilESerializer
 # Create your views here.
 
 class ConfiguracionViewSet(viewsets.ModelViewSet):
@@ -33,6 +35,10 @@ class PerfilViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = PerfilSerializer
 
+class PerfilEViewSet(viewsets.ModelViewSet):
+    queryset = PerfilE.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = PerfilESerializer
 
 @api_view(['GET'])
 @authentication_classes([])
@@ -142,3 +148,12 @@ def perfil(request, pk):
             'error':'Permission Denied!'
         }
         return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def perfilEAll(request):
+    data = PerfilE.objects.all()
+    serializer = PerfilESerializer(data, many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)

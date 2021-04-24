@@ -9,9 +9,11 @@ urlpatterns = [
     path('configuracion/<int:pk>', views.configuracion),
     path('allperfiles', views.perfilAll),
     path('perfil/<int:pk>', views.perfil),
+    path('allperfilesE)', views.perfilEAll)
 ]
 router = routers.DefaultRouter()
 router.register('configuraciones',views.ConfiguracionViewSet,'configuraciones')
 router.register('perfiles',views.PerfilViewSet,'perfiles')
+router.register('perfilesE', views.PerfilEViewSet,'perfilesE')
 urlpatterns = urlpatterns + router.urls
 
