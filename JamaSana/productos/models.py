@@ -114,13 +114,14 @@ class Pedido(models.Model):
     fecha_emitido = models.DateTimeField('Fecha de emisión')
     estado = models.IntegerField(default=0)
     
+    
     class PedidoForm(ModelForm):    
         class Meta:
             ordering = ["id_cliente"]
             verbose_name = "Pedido"
 
     def __str__(self):
-        return self.id_cliente
+        return str(self.id)
 
 class DetallePedido(models.Model):
     id_pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
