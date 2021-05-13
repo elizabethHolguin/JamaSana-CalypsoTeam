@@ -80,8 +80,8 @@ def login(request):
         cliente = Cliente.objects.get(user=user)
         token, created = Token.objects.get_or_create(user=user) 
         data = {
-            "nombre": cliente.nombre,
-            "apellido": cliente.apellido,
+            "first_name": cliente.user.first_name,
+            "last_name": cliente.user.last_name,
             "username": cliente.user.username,
             "email": cliente.user.email,
             "direccion": cliente.direccion,
