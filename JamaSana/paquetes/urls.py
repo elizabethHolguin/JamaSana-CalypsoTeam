@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
    path('alltiposuscripciones', views.tipoSuscripcionAll),
     path('tiposuscripcion/<int:pk>', views.tipoSuscripcion),
-    path('allsuscripciom', views.suscripcionAll),
+    path('allsuscripcion', views.suscripcionAll),
     path('suscripcion/<int:pk>', views.suscripcion),
     path('allclientesuscripciones', views.clienteSuscripcionAll),
     path('clientesuscripciones/<int:pk>', views.clienteSuscripcion),
