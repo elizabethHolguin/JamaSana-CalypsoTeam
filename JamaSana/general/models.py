@@ -41,3 +41,34 @@ class PerfilE(models.Model):
     def __str__(self):
         return self.nombre
 
+
+class PerfilParametrizado(models.Model):
+    nombre=models.CharField(max_length=200)
+    cabecera=models.CharField(max_length=200)
+    detalle=models.CharField(max_length=200)
+    peso_mode_comparator=models.IntegerField()
+    peso_minimo=models.FloatField()
+    peso_maximo=models.FloatField()
+    altura_mode_comparator=models.IntegerField()
+    altura_minimo=models.FloatField()
+    altura_maximo=models.FloatField()
+    imc_mode_comparator=models.IntegerField()
+    imc_minimo=models.FloatField()
+    imc_maximo=models.FloatField()
+
+    class Meta:
+        verbose_name = "PerfilParametrizado"
+
+    def __str__(self):
+        return self.nombre
+
+class CategoriasPerfilParametrizado(models.Model):
+
+    perfil_parametrizado=models.ForeignKey("PerfilParametrizado", on_delete = models.DO_NOTHING)
+    categoria=models.ForeignKey("productos.Categoria", on_delete = models.DO_NOTHING)
+
+    class Meta:
+        verbose_name = "CategoriasPerfilParametrizado"
+
+    def __str__(self):
+        return self.perfil_parametrizado.nombre + ' - ' + self.categoria.nombre
