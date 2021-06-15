@@ -232,6 +232,84 @@ def perfilParametrizado(request, pk):
         }
         return Response(msg,status=status.HTTP_403_FORBIDDEN)
 
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
+@permission_classes([AllowAny])
+def create_categorias(request,pk):
+
+    if(request.method=='POST' and request.user.is_authenticated):
+        categorias = request.data.get("categorias")
+        if categorias is not None:
+            x = 0
+            perfilPP = generics.get_object_or_404(PerfilParametrizado,id=pk)
+            categoriasPP = Categoria.objects.filter(nombre__in=categorias)
+            for categoria in categoriasPP:
+                resultado = CategoriasPerfilParametrizado.create(perfil_parametrizado=perfilPP,categoria=categoria)
+                if resultado is not None:
+                    x += 1
+            if (len(categoriasPP) - x) != 0:
+                return Response({'message': 'Hubieron categorias que no pudieron ser creadas'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Categorias anexadas al perfil parametrizado'},status=status.HTTP_200_OK)
+            
+        
+    msg={
+        'error':'Permission Denied!'
+    }
+    return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET','POST','DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
+@permission_classes([AllowAny])
+def categoriasPP(request,pk):
+
+    if(request.method=='GET' and request.user.is_authenticated):
+        registros = PerfilParametrizado.objects.filter(perfil_parametrizado=pk)
+
+        if  len(registros) == 0:
+            return Response({'message': 'No hay categorias anexadas a este perfil'},status=status.HTTP_404_NOT_FOUND)
+
+        respuesta = []
+
+        for registro in registros:
+            respuesta.append({'id': registro.categoria.pk, 'nombre': registro.categoria.nombre })
+
+        data = {
+            'categorias': respuesta
+        }
+
+        return Response(data,status=status.HTTP_200_OK)
+
+    elif(request.method=='POST' and request.user.is_authenticated):
+        categoria = request.data.get("categoria")
+        if categoria is not None:
+            x = 0
+            perfilPP = generics.get_object_or_404(PerfilParametrizado,id=pk)
+            categoriaPP = generics.get_object_or_404(Categoria,id=categoria)
+            if categoriaPP is not None:
+                resultado = CategoriasPerfilParametrizado.create(perfil_parametrizado=perfilPP,categoria=categoriaPP)
+                if resultado is None:
+                    return Response({'message': 'No se pudo anexar la categoria con el perfil'},status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'Categoria pudo ser anexada al perfil'},status=status.HTTP_200_OK)
+            return Response({'message': 'Categoria enviada no existe en la base de datos'},status=status.HTTP_404_NOT_FOUND)
+                
+        return Response({'message': 'No se ha enviado categoria a anexar al perfil'},status=status.HTTP_400_BAD_REQUEST)
+
+    elif(request.method=='DELETE' and request.user.is_authenticated):
+        data = generics.get_object_or_404(CategoriasPerfilParametrizado,id=pk)
+        if data is not None:
+            data.delete()
+            msg={
+                'message':'Categoria eliminado exitosamente'
+            }
+            return Response(msg,status=status.HTTP_200_OK)
+        return Response({'message': 'Categoria no existe'},status=status.HTTP_400_BAD_REQUEST)        
+        
+    msg={
+        'error':'Permission Denied!'
+    }
+    return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
 @permission_classes([AllowAny])

@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.forms import ModelForm
 # Create your models here.
@@ -7,6 +8,7 @@ class Configuracion(models.Model):
     direccion_fija = models.CharField(max_length=500)
     no_comidas_por_semana = models.IntegerField(default=0)
     no_de_comida_por_dia = models.IntegerField(default=0)
+    perfil_defecto = models.ForeignKey("PerfilParametrizado", on_delete = models.CASCADE, null=True, default=None)
 
     class ConfiguracionForm(ModelForm):
         class Meta:
@@ -44,17 +46,15 @@ class PerfilE(models.Model):
 
 class PerfilParametrizado(models.Model):
     nombre=models.CharField(max_length=200)
-    cabecera=models.CharField(max_length=200)
-    detalle=models.CharField(max_length=200)
-    peso_mode_comparator=models.IntegerField()
-    peso_minimo=models.FloatField()
-    peso_maximo=models.FloatField()
-    altura_mode_comparator=models.IntegerField()
-    altura_minimo=models.FloatField()
-    altura_maximo=models.FloatField()
-    imc_mode_comparator=models.IntegerField()
-    imc_minimo=models.FloatField()
-    imc_maximo=models.FloatField()
+    peso_mode_comparator=models.IntegerField(default=1)
+    peso_minimo=models.FloatField(blank=True, null=True)
+    peso_maximo=models.FloatField(blank=True, null=True)
+    altura_mode_comparator=models.IntegerField(default=1)
+    altura_minimo=models.FloatField(blank=True, null=True)
+    altura_maximo=models.FloatField(blank=True, null=True)
+    imc_mode_comparator=models.IntegerField(default=1)
+    imc_minimo=models.FloatField(blank=True, null=True)
+    imc_maximo=models.FloatField(blank=True, null=True)
 
     class Meta:
         verbose_name = "PerfilParametrizado"
@@ -64,11 +64,23 @@ class PerfilParametrizado(models.Model):
 
 class CategoriasPerfilParametrizado(models.Model):
 
-    perfil_parametrizado=models.ForeignKey("PerfilParametrizado", on_delete = models.DO_NOTHING)
-    categoria=models.ForeignKey("productos.Categoria", on_delete = models.DO_NOTHING)
+    perfil_parametrizado=models.ForeignKey("PerfilParametrizado", on_delete = models.CASCADE)
+    categoria=models.ForeignKey("productos.Categoria", on_delete = models.CASCADE)
 
     class Meta:
         verbose_name = "CategoriasPerfilParametrizado"
+        unique_together = ('perfil_parametrizado', 'categoria')
 
+    def create(self, perfil_parametrizado, categoria):
+        try:
+            categoriaPP = CategoriasPerfilParametrizado()
+            categoriaPP.perfil_parametrizado = perfil_parametrizado
+            categoriaPP.categoria = categoria
+            categoriaPP.save()
+            return categoriaPP
+        except Exception as e:
+            return None
+
+    
     def __str__(self):
         return self.perfil_parametrizado.nombre + ' - ' + self.categoria.nombre

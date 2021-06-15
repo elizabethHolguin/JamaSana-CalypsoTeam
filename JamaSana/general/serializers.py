@@ -38,8 +38,6 @@ class PerfilParametrizadoSerializer(serializers.ModelSerializer):
         model=PerfilParametrizado
         fields=('id',
         'nombre',
-        'cabecera',
-        'detalle',
         'peso_mode_comparator',
         'peso_minimo',
         'peso_maximo',
