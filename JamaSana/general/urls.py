@@ -12,7 +12,9 @@ urlpatterns = [
     path('allperfilesE)', views.perfilEAll),
     path('allpefilesP',views.perfilParametrizadoAll),
     path('perfilP/<int:pk>', views.perfilParametrizado),
-    path('obtenerCategorias', views.get_categorias_perfil)
+    path('obtenerCategorias', views.get_categorias_perfil),
+    path('crearcategorias/<int:pk>', views.create_categorias),
+    path('categoriasPP/<int:pk>', views.categoriasPP),
 
 
 ]
