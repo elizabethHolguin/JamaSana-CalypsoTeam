@@ -4,6 +4,7 @@ django-bootstrap-form
 django-cors-headers
 django-rest-auth
 djangorestframework
+Pillow
 requests
 requests-oauthlib
 requests-unixsocket
